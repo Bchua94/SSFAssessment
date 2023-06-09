@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<!--
+	TODO: Task 1, Task 2, Task 3
+-->
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Login</title>
+	</head>
+	<script>
+	 function generateCaptcha() {
+            var num1 = Math.floor(Math.random() * 10); // Generate a random number between 0 and 9
+            var num2 = Math.floor(Math.random() * 10);
+            var operation = Math.floor(Math.random() * 4); // Generate a random number between 0 and 3 for the operation
+
+            var operator;
+            var result;
+
+            // Determine the operator and calculate the result
+            switch (operation) {
+                case 0:
+                    operator = '+';
+                    result = num1 + num2;
+                    break;
+                case 1:
+                    operator = '-';
+                    result = num1 - num2;
+                    break;
+                case 2:
+                    operator = '*';
+                    result = num1 * num2;
+                    break;
+                case 3:
+                    operator = '/';
+                    result = num1 / num2;
+                    break;
+            }
+
+            var captcha = num1 + ' ' + operator + ' ' + num2 ;
+            document.getElementById('captcha').textContent = captcha;
+            document.getElementById('expectedResult').value = result;
+        }
+    </script>
+	<body onload="generateCaptcha();">
+ 
+		<h2>Please Login</h2>
+		<p style="color: red;" th:text="${error}"></p>
+		<form action="/login" method="POST" th:object="${loginForm}">
+			<table>
+				<tr>
+				<input type="hidden" id="noOfAttempts" name="noOfAttempts" th:value="${noOfAttempts}">
+							<input type="hidden" id="isUserDisable" name="isUserDisable" th:value="${isUserDisable}">
+					<td> 
+						<label for="username">Username:</label> 
+					</td>
+					<td>
+						<input type="text" id="username" size="30" 
+								placeholder="Please type in your username" name="username" >
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="password">Password:</label>
+					</td>
+					<td>
+						<input type="password" id="password" size="30" 
+								placeholder="Please type in your password" name="password">
+					</td>
+				</tr>
+				<tr>
+				<td>
+				Captcha
+				</td>
+					<td>
+					<p id="captcha"></p>
+						<input type="text" id="captcha" name="captcha" placeholder="Enter the result">
+		        		<input type="hidden" id="expectedResult" name="expectedResult">
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+						<button>Login</button>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</body>
+</html>
